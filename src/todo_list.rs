@@ -1,10 +1,21 @@
 #[derive(Debug)]
+pub struct Todo {
+    pub text: String,
+    pub completed: bool,
+}
+
+#[derive(Debug)]
 pub struct TodoList {
-    pub list: Vec<String>,
+    pub list: Vec<Todo>,
 }
 
 impl TodoList {
     pub fn add(&mut self, new_todo: String) {
+        let new_todo = Todo {
+            text: new_todo,
+            completed: false,
+        };
+
         self.list.push(new_todo);
     }
 
@@ -21,23 +32,66 @@ impl TodoList {
         self.list = Vec::new();
     }
 
-    pub fn list_items(&self) {
+    pub fn list_all_items(&self) {
         if self.list.is_empty() {
             println!("Your todo list is empty.");
             return;
         }
 
         for (index, todo) in self.list.iter().enumerate() {
-            println!("{} - {}", index + 1, todo);
+            println!(
+                "{} - {} is completed: {}",
+                index + 1,
+                todo.text,
+                todo.completed
+            );
         }
     }
 
-    pub fn edit_item(&mut self, item_index: usize, new_todo: String) {
+    pub fn list_completed_items(&self) {
+        if self.list.is_empty() {
+            println!("Your todo list is empty.");
+            return;
+        }
+
+        for (index, todo) in self.list.iter().enumerate() {
+            if todo.completed {
+                println!(
+                    "{} - {} is completed: {}",
+                    index + 1,
+                    todo.text,
+                    todo.completed
+                );
+            }
+        }
+    }
+
+    pub fn list_uncompleted_items(&self) {
+        if self.list.is_empty() {
+            println!("Your todo list is empty.");
+            return;
+        }
+
+        for (index, todo) in self.list.iter().enumerate() {
+            if !todo.completed {
+                println!(
+                    "{} - {} is completed: {}",
+                    index + 1,
+                    todo.text,
+                    todo.completed
+                );
+            }
+        }
+    }
+
+    pub fn complete_item(&mut self, item_index: usize) {
         if item_index > self.list.len() || item_index <= 0 {
             println!("You can't edit a nonexistent item");
             return;
         }
 
-        self.list[item_index - 1] = new_todo;
+        let todo = &mut self.list[item_index - 1];
+
+        todo.completed = true;
     }
 }
