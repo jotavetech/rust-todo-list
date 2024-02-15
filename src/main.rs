@@ -17,6 +17,8 @@ fn main() {
     todo.add(String::from("todo 1"));
     todo.add(String::from("todo 2"));
 
+    todo.edit_item(2, String::from("new todo 2"));
+
     todo.list_items();
 
     println!("{:?}", todo);
